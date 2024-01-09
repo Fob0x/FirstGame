@@ -7,24 +7,26 @@ namespace FirstGame
     internal class Engine
     {
         CleosMovements Cleo;
+        Fireball fireball;
         Image image;
         Sprite BackgroundSprite;
         static Texture BackgroundTexture;
 
-        static public View camera = new View(new Vector2f(0, 0), new Vector2f(1920, 1080));
+        static public View camera;
         static public RenderWindow window = new RenderWindow(new VideoMode(1920, 1080), "SuperGame");
-
+        
         InputHandler inputHandler;
 
         public Engine()
         {
             window.Closed += (sender, e) => window.Close();
-
+            window.SetFramerateLimit(60);
+            camera = window.GetView();
             image = new Image("D:\\Repos\\FirstGame\\back.jpg");
             BackgroundTexture = new Texture(image);
             BackgroundSprite = new Sprite(BackgroundTexture);
             Cleo = new CleosMovements();
-            inputHandler = new InputHandler(Cleo);
+            inputHandler = new InputHandler(Cleo, fireball);
         }
 
         void Draw()
@@ -47,7 +49,8 @@ namespace FirstGame
             {
                 fireball.Update(dtAsSeconds);
             }
-            camera.Center = new Vector2f(Cleo.position.X, camera.Center.Y);
+            camera.Center = Cleo.position;
+           
         }
 
         public void Start()

@@ -16,7 +16,7 @@ namespace FirstGame
 
         public Cleo() // Конструктор Главной Героини Клео
         {
-            imageLeft = new Image("D:\\Repos\\FirstGame\\Cleo.png");
+            imageLeft = new Image("D:\\Repos\\FirstGame\\CleoLeft.png");
             imageRight = new Image("D:\\Repos\\FirstGame\\CleoRight.png");
             textureLeft = new Texture(imageLeft);
             textureRight = new Texture(imageRight);

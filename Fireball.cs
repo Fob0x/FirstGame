@@ -1,30 +1,26 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FirstGame
 {
     internal class Fireball
     {
         public Sprite sprite;
-        public Vector2f Velocity { get; set; }
+        public Vector2f Position { get; set; }
         Image image;
         Texture texture;
-        public Fireball(Vector2f startPosition, Vector2f velocity)
+        public bool mouseWasPressed;
+        public Fireball(Vector2f startPosition, Vector2f position)
         {
-            image = new Image("D:\\Repos\\FirstGame\\Cleo.png");
+            image = new Image("D:\\Repos\\FirstGame\\Fireball.png");
             texture = new Texture(image);
             sprite = new Sprite(texture) { Position = startPosition };
-            Velocity = velocity;
+            Position = position;
         }
 
         public void Update(float elapsedTime)
         {
-            sprite.Position += Velocity * elapsedTime;
+            sprite.Position += Position * elapsedTime;
         }
     }
 }

@@ -5,8 +5,14 @@ namespace FirstGame
     internal class InputHandler
     {
         private CleosMovements cleo;
+        private Fireball fireball;
 
-        public InputHandler(CleosMovements cleo) {  this.cleo = cleo; }
+        public InputHandler(CleosMovements cleo, Fireball fireball) 
+        {  
+            this.cleo = cleo;
+            //this.fireball = fireball;
+            //fireball.mouseWasPressed = false;
+        }
 
         //// Управление джойстиком
         //uint joystickId = 0; // ID джойстика (обычно 0 для первого подключенного)
@@ -29,11 +35,24 @@ namespace FirstGame
                 cleo.Jump();
             else
                 cleo.StopJump();
-            
+
+            //if (Mouse.IsButtonPressed(Mouse.Button.Left))
+            //{
+            //    if (!fireball.mouseWasPressed)
+            //    {
+            //        cleo.Attack();
+            //        fireball.mouseWasPressed = true;
+            //    }
+            //}
+            //else
+            //{
+            //    fireball.mouseWasPressed = false;
+            //}
             if (Mouse.IsButtonPressed(Mouse.Button.Left))
             {
                 cleo.Attack();
             }
+
 
             //if (Joystick.IsConnected(joystickId))
             //{
@@ -57,5 +76,7 @@ namespace FirstGame
             //        cleo.StopJump();
             //}
         }
+
+
     }
 }

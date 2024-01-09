@@ -79,9 +79,13 @@ namespace FirstGame
         /// </summary>
         /// <param name="elapsedTime">Передаём прошедшее время для создания движения</param>
 
+        /// <summary>
+        /// Метод выстрела Фаербола
+        /// </summary>
+
         public void Attack()
         {
-            Vector2f fireballStartPosition = new Vector2f(position.X, position.Y); // Начальная позиция Фаербола
+            Vector2f fireballStartPosition = new Vector2f(position.X + 240, position.Y + 50); // Начальная позиция Фаербола
             Vector2f fireballVelocity = new Vector2f(1000, 0); // Скорость фаербола
             fireballs.Add(new Fireball(fireballStartPosition, fireballVelocity));
         }
@@ -113,8 +117,8 @@ namespace FirstGame
             horizontalSpeed = Math.Clamp(horizontalSpeed, -maxSpeed, maxSpeed);
 
             // Перемещение по горизонтали
-            position.X += horizontalSpeed * elapsedTime;
-
+            //position.X += horizontalSpeed * elapsedTime;
+            position = new Vector2f(position.X + horizontalSpeed * elapsedTime, position.Y);
             // Обработка вертикального движения
             if (upPressed && isOnGround)
             {
@@ -126,12 +130,12 @@ namespace FirstGame
             verticalSpeed += gravity * elapsedTime; 
 
             // Перемещение по вертикали
-            position.Y += verticalSpeed * elapsedTime;
-
+            //position.Y += verticalSpeed * elapsedTime;
+            position = new Vector2f(position.X, position.Y + verticalSpeed * elapsedTime);
             // Проверка на землю и коррекция положения
             if (position.Y >= 840) // Предпологаем, что 840 - это уровень земли (т.к. у этой манды отсчёт пикселей снизу идёт)
             {
-                position.Y = 840;
+                position = new Vector2f(position.X, 840);
                 verticalSpeed = 0.0f;
                 isOnGround = true; // Персонаж на земле
             }
