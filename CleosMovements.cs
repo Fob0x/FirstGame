@@ -1,69 +1,129 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SFML.System;
 
-namespace FirstGame 
+namespace FirstGame
 {
     internal class CleosMovements : Cleo
     {
+        
         // Установка позиции персонажа на экране
-        Vector2f position = new Vector2f(0,840);
+        Vector2f position = new Vector2f(0, 840); // Изменено начальное положение
 
-        // Флаги для остлеживания нажатия движения
-        bool leftPressed;
-        bool rightPressed;
+        // Флаги для отслеживания нажатия движения
+        bool leftPressed; // Нажата ли кнопка влево
+        bool rightPressed; // Нажата ли кнопка вправо
+        bool upPressed; // Нажата ли кнопка прыжка
+        bool isOnGround = true; // Переменная для отслеживания, находится ли персонаж на земле (Изначально да, ахах))
 
-        // Переменные для скорости 
-        float horizontalSpeed = 200; // Горизонтальная скорость персонажа
+        // Переменные, отвечающие за движение
+        float horizontalSpeed = 0; // Горизонтальная скорость персонажа
         float verticalSpeed = 0; // Вертикальная скорость персонажа
-        float gravity = 500; // Наше ускорение из закона Ньютона = ускорению свободного падения
-        float jumpSpeed = -400; // Начальная скорость прыжка
+        const float gravity = 1500; // Гравитация (по закону Ньютона F=ma, но при прыжке a = g)
+        const float jumpSpeed = -600; // Скорость прыжка
+        const float acceleration = 500; // Ускорение
+        const float deceleration = 500; // Замедление (сопротивление некое)
+        const float maxSpeed = 400; // Максимальная скорость
 
+        /// <summary>
+        /// Метод, отвечающий за движение влево
+        /// </summary>
         public void MoveLeft()
         {
             leftPressed = true;
             sprite.Texture = textureLeft;
         }
-
         /// <summary>
-        /// Движение персонажа вправо
+        /// Метод, отвечающий за движение вправо
         /// </summary>
         public void MoveRight()
         {
             rightPressed = true;
             sprite.Texture = textureRight;
         }
-
         /// <summary>
-        /// Остановка движения персонажа в левую сторону
+        /// Метод, отвечающий за прыжок
+        /// </summary>
+        public void Jump()
+        {
+            if (position.Y >= 840)
+                verticalSpeed = jumpSpeed;
+        }
+        /// <summary>
+        /// Метод, отвечающий за остановку движения влево
         /// </summary>
         public void StopLeft()
         {
             leftPressed = false;
         }
-
         /// <summary>
-        /// Остановка движения персонажа в правую сторону
+        /// Метод, отвечающий за остановку движения вправо
         /// </summary>
         public void StopRight()
         {
             rightPressed = false;
         }
+        /// <summary>
+        /// Метод, отвечающий за остановку прыжка
+        /// </summary>
+        public void StopJump()
+        {
+            upPressed = false;
+        }
 
-
-
+        /// <summary>
+        /// Метод обновления движения
+        /// </summary>
+        /// <param name="elapsedTime">Передаём прошедшее время для создания движения</param>
         public void Update(float elapsedTime)
         {
+            // Обработка горизонтального движения
             if (leftPressed)
-                position.X -= horizontalSpeed * elapsedTime;
+                horizontalSpeed -= acceleration * elapsedTime;
             if (rightPressed)
-                position.X += horizontalSpeed * elapsedTime;
+                horizontalSpeed += acceleration * elapsedTime;
+
+            /* Замедление, когда клавиши не нажаты.
+             * Jбеспечивает плавное замедление до остановки, не допуская смены направления движения из-за замедления.*/
+            if (!leftPressed && !rightPressed)
+            {
+                /*Когда персонаж движется вправоу у него положительная скорость. 
+                 * 2-ой аргумент вычисляет новую скорость после применения замедления. 
+                 * Max гарантирует, что скорость не станет отрицательной (если замедление достаточно сильное)
+                 (Аналогично и для второго)*/
+                if (horizontalSpeed > 0)
+                    horizontalSpeed = Math.Max(0, horizontalSpeed - deceleration * elapsedTime);
+                else if (horizontalSpeed < 0)
+                    horizontalSpeed = Math.Min(0, horizontalSpeed + deceleration * elapsedTime);
+            }
+
+            // Ограничение максимальной скорости
+            horizontalSpeed = Math.Clamp(horizontalSpeed, -maxSpeed, maxSpeed);
+
+            // Перемещение по горизонтали
+            position.X += horizontalSpeed * elapsedTime;
+
+            // Обработка вертикального движения
+            if (upPressed && isOnGround)
+            {
+                verticalSpeed = jumpSpeed;
+                isOnGround = false; // Персонаж в воздухе
+            }
+
+            // Применение гравитации
+            verticalSpeed += gravity * elapsedTime; 
+
+            // Перемещение по вертикали
+            position.Y += verticalSpeed * elapsedTime;
+
+            // Проверка на землю и коррекция положения
+            if (position.Y >= 840) // Предпологаем, что 840 - это уровень земли (т.к. у этой манды отсчёт пикселей снизу идёт)
+            {
+                position.Y = 840;
+                verticalSpeed = 0.0f;
+                isOnGround = true; // Персонаж на земле
+            }
 
             sprite.Position = position;
+            //camera.Center = new Vector2f(position.X, camera.Center.Y);
         }
     }
 }
