@@ -14,15 +14,14 @@ namespace FirstGame
         static Image imageLeft; // image = new Image("D:\\Repos\\FirstGame\\Cleo.png"); //System.Environment.CurrentDirectory);
         static Image imageRight;
 
-        bool upPressed; // Ещё не реализованный прыжок
         public Cleo() // Конструктор Главной Героини Клео
         {
             imageLeft = new Image("D:\\Repos\\FirstGame\\Cleo.png");
             imageRight = new Image("D:\\Repos\\FirstGame\\CleoRight.png");
             textureLeft = new Texture(imageLeft);
             textureRight = new Texture(imageRight);
-            
-            sprite = new Sprite(textureLeft);
+
+            sprite = new Sprite(textureRight);
         }
         /// <summary>
         /// Метод для получения спрайта

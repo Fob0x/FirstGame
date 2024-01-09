@@ -1,7 +1,4 @@
 ﻿using FirstGame;
-using SFML.Graphics;
-using SFML.System;
-using SFML.Window;
 
 class Program
 {

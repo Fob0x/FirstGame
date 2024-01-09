@@ -6,7 +6,7 @@ namespace FirstGame
     {
         
         // Установка позиции персонажа на экране
-        Vector2f position = new Vector2f(0, 840); // Изменено начальное положение
+        public Vector2f position { get; private set; } = new Vector2f(0, 840); // Изменено начальное положение
 
         // Флаги для отслеживания нажатия движения
         bool leftPressed; // Нажата ли кнопка влево
@@ -22,6 +22,11 @@ namespace FirstGame
         const float acceleration = 500; // Ускорение
         const float deceleration = 500; // Замедление (сопротивление некое)
         const float maxSpeed = 400; // Максимальная скорость
+
+        // Переменные для Фаербола
+        public List<Fireball> fireballs = new List<Fireball>();
+
+
 
         /// <summary>
         /// Метод, отвечающий за движение влево
@@ -73,6 +78,15 @@ namespace FirstGame
         /// Метод обновления движения
         /// </summary>
         /// <param name="elapsedTime">Передаём прошедшее время для создания движения</param>
+
+        public void Attack()
+        {
+            Vector2f fireballStartPosition = new Vector2f(position.X, position.Y); // Начальная позиция Фаербола
+            Vector2f fireballVelocity = new Vector2f(1000, 0); // Скорость фаербола
+            fireballs.Add(new Fireball(fireballStartPosition, fireballVelocity));
+        }
+
+
         public void Update(float elapsedTime)
         {
             // Обработка горизонтального движения
@@ -123,7 +137,7 @@ namespace FirstGame
             }
 
             sprite.Position = position;
-            //camera.Center = new Vector2f(position.X, camera.Center.Y);
+            
         }
     }
 }
