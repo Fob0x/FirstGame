@@ -4,7 +4,6 @@ namespace FirstGame
 {
     internal class CleosMovements : Cleo
     {
-        
         // Установка позиции персонажа на экране
         public Vector2f position { get; private set; } = new Vector2f(0, 840); // Изменено начальное положение
 
@@ -26,7 +25,13 @@ namespace FirstGame
         // Переменные для Фаербола
         public List<Fireball> fireballs = new List<Fireball>();
 
+        public enum Direction
+        {
+            Left,
+            Right
+        }
 
+        public Direction currentDirection = Direction.Right;
 
         /// <summary>
         /// Метод, отвечающий за движение влево
@@ -35,6 +40,7 @@ namespace FirstGame
         {
             leftPressed = true;
             sprite.Texture = textureLeft;
+            currentDirection = Direction.Left;
         }
         /// <summary>
         /// Метод, отвечающий за движение вправо
@@ -43,6 +49,7 @@ namespace FirstGame
         {
             rightPressed = true;
             sprite.Texture = textureRight;
+            currentDirection = Direction.Right;
         }
         /// <summary>
         /// Метод, отвечающий за прыжок
@@ -75,22 +82,22 @@ namespace FirstGame
         }
 
         /// <summary>
-        /// Метод обновления движения
-        /// </summary>
-        /// <param name="elapsedTime">Передаём прошедшее время для создания движения</param>
-
-        /// <summary>
         /// Метод выстрела Фаербола
         /// </summary>
-
         public void Attack()
         {
-            Vector2f fireballStartPosition = new Vector2f(position.X + 240, position.Y + 50); // Начальная позиция Фаербола
-            Vector2f fireballVelocity = new Vector2f(1000, 0); // Скорость фаербола
-            fireballs.Add(new Fireball(fireballStartPosition, fireballVelocity));
+
+            Vector2f fireballStartPosition = new Vector2f(position.X + (currentDirection == Direction.Right ? 240 : -50), position.Y + 50);
+            Vector2f fireballVelocity = new Vector2f(currentDirection == Direction.Right ? 1000 : -1000, 0);
+
+
+            fireballs.Add(new Fireball(fireballStartPosition, fireballVelocity, currentDirection));
         }
 
-
+        /// <summary>
+        /// Метод обновления движения
+        /// </summary>
+        /// <param name="elapsedTime">Передаём прошедшее время для создания движения</param
         public void Update(float elapsedTime)
         {
             // Обработка горизонтального движения
@@ -141,7 +148,6 @@ namespace FirstGame
             }
 
             sprite.Position = position;
-            
         }
     }
 }

@@ -26,7 +26,7 @@ namespace FirstGame
             BackgroundTexture = new Texture(image);
             BackgroundSprite = new Sprite(BackgroundTexture);
             Cleo = new CleosMovements();
-            inputHandler = new InputHandler(Cleo, fireball);
+            inputHandler = new InputHandler(Cleo);
         }
 
         void Draw()
@@ -45,12 +45,16 @@ namespace FirstGame
         void Update(float dtAsSeconds)
         {
             Cleo.Update(dtAsSeconds);
+            // Обновление фаерболов
             foreach (var fireball in Cleo.fireballs)
             {
                 fireball.Update(dtAsSeconds);
             }
             camera.Center = Cleo.position;
            
+            // Удаление фаерболов, которые пролетели слишком далеко
+            Cleo.fireballs.RemoveAll(fireball => fireball.ShouldBeDestroyed());
+
         }
 
         public void Start()
