@@ -14,7 +14,8 @@ namespace FirstGame
 
         static public View camera;
         static public RenderWindow window = new RenderWindow(new VideoMode(1920, 1080), "SuperGame");
-        
+        // Создаем список врагов как поле класса
+        List<Enemy> enemies = new List<Enemy>();
         InputHandler inputHandler;
 
         public Engine()
@@ -27,6 +28,8 @@ namespace FirstGame
             BackgroundSprite = new Sprite(BackgroundTexture);
             Cleo = new CleosMovements();
             inputHandler = new InputHandler(Cleo);
+            // Инициализируем врагов в конструкторе
+            enemies.Add(new PatrollingEnemy(new Vector2f(0, 840), new Vector2f(500, 840), 1000));
         }
 
         void Draw()
@@ -34,10 +37,16 @@ namespace FirstGame
             window.Clear(Color.White);
             window.Draw(BackgroundSprite);
             window.Draw(Cleo.GetSprite());
+            // Отрисовка врагов
+            foreach (var enemy in enemies)
+            {
+                enemy.Draw(window); // Рисуем NPC на экране
+            }
             foreach (var fireball in Cleo.fireballs)
             {
                 window.Draw(fireball.sprite);
             }
+            
             window.SetView(camera);
             window.Display();
         }
@@ -51,7 +60,11 @@ namespace FirstGame
                 fireball.Update(dtAsSeconds);
             }
             camera.Center = Cleo.position;
-           
+            // Обновление и отрисовка врагов
+            foreach (var enemy in enemies)
+            {
+                enemy.Update(dtAsSeconds, Cleo.position);
+            }
             // Удаление фаерболов, которые пролетели слишком далеко
             Cleo.fireballs.RemoveAll(fireball => fireball.ShouldBeDestroyed());
 
