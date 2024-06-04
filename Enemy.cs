@@ -12,8 +12,8 @@ namespace FirstGame
         protected Texture textureRight;
         protected Image imageLeft;
         protected Image imageRight;
-        public enum Direction
-        {
+        public enum EnemyDirection
+		{
             Left,
             Right
         }
@@ -21,12 +21,12 @@ namespace FirstGame
         {
             currentPosition = startPosition;
             this.speed = speed;
-            LoadTexture(currentDirection);
-            SetDirection(currentDirection);
+            LoadTexture(currenEnemytDirection);
+            SetDirection(currenEnemytDirection);
             
         }
-        public Direction currentDirection = Direction.Right;
-        private void LoadTexture(Direction direction)
+        public EnemyDirection currenEnemytDirection = EnemyDirection.Right;
+        private void LoadTexture(EnemyDirection direction)
         {
             imageLeft = new Image("D:\\Repos\\FirstGame\\EnemyLeft.png");
             textureLeft = new Texture(imageLeft);
@@ -38,12 +38,12 @@ namespace FirstGame
             SetDirection(direction); // Обновление текстуры спрайта
         }
 
-        public void SetDirection(Direction direction)
+        public void SetDirection(EnemyDirection direction)
         {
-            if (currentDirection != direction)
+            if (currenEnemytDirection != direction)
             {
-                currentDirection = direction;
-                sprite.Texture = direction == Direction.Right ? textureRight : textureLeft;
+				currenEnemytDirection = direction;
+                sprite.Texture = direction == EnemyDirection.Right ? textureRight : textureLeft;
                 sprite.Position = currentPosition;
             }
         }

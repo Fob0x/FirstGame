@@ -80,7 +80,7 @@ namespace FirstGame
 					cleo.StopJump();
 				}
 
-				bool currentJoystickButtonPressed = Joystick.IsButtonPressed(joystickId, 2); // Предполагаем, что кнопка 1 для атаки
+				bool currentJoystickButtonPressed = Joystick.IsButtonPressed(joystickId, 2); // Предполагаем, что кнопка 2 для атаки
 				if (currentJoystickButtonPressed && !previousJoystickButtonPressed)
 				{
 					cleo.Attack();
