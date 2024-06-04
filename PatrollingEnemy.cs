@@ -1,5 +1,4 @@
-﻿
-using SFML.System;
+﻿using SFML.System;
 
 namespace FirstGame
 {
@@ -18,9 +17,6 @@ namespace FirstGame
         // Переменные для Фаербола
         public List<Fireball> fireballs = new List<Fireball>();
 
-        
-
-       
         public override bool CanSeePlayer(Vector2f playerPosition)
         {
             float detectionRadius = 500;

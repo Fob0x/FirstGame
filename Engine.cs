@@ -54,37 +54,40 @@ namespace FirstGame
         void Update(float dtAsSeconds)
         {
             Cleo.Update(dtAsSeconds);
+
+            // Обновление и отрисовка врагов
+            foreach (var enemy in enemies)
+            {
+                enemy.Update(dtAsSeconds, Cleo.position);
+            }
             // Обновление фаерболов
             foreach (var fireball in Cleo.fireballs)
             {
                 fireball.Update(dtAsSeconds);
             }
             camera.Center = Cleo.position;
-            // Обновление и отрисовка врагов
-            foreach (var enemy in enemies)
-            {
-                enemy.Update(dtAsSeconds, Cleo.position);
-            }
+            
             // Удаление фаерболов, которые пролетели слишком далеко
             Cleo.fireballs.RemoveAll(fireball => fireball.ShouldBeDestroyed());
 
         }
 
-        public void Start()
-        {
-            Clock clock = new Clock();
+		public void Start()
+		{
+			Clock clock = new Clock();
 
-            while (window.IsOpen)
-            {
-                window.DispatchEvents();
-                Time dt = clock.Restart();
+			while (window.IsOpen)
+			{
+				window.DispatchEvents();
+				Time dt = clock.Restart();
 
-                float dtAsSeconds = dt.AsSeconds();
+				float dtAsSeconds = dt.AsSeconds();
 
-                inputHandler.HandleInput();
-                Update(dtAsSeconds);
-                Draw();
-            }
-        }
-    }
+				inputHandler.HandleInput();
+				Update(dtAsSeconds);
+				Joystick.Update();
+				Draw();
+			}
+		}
+	}
 }

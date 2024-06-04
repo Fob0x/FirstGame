@@ -14,7 +14,7 @@ namespace FirstGame
         static Image imageLeft; // image = new Image("D:\\Repos\\FirstGame\\Cleo.png"); //System.Environment.CurrentDirectory);
         static Image imageRight;
 
-        public Cleo() // Конструктор Главной Героини Клео
+        public Cleo() // Конструктор Главной Героини - Клео
         {
             imageLeft = new Image("D:\\Repos\\FirstGame\\CleoLeft.png");
             imageRight = new Image("D:\\Repos\\FirstGame\\CleoRight.png");
