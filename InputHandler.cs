@@ -86,11 +86,13 @@ namespace FirstGame
 					cleo.Attack();
 				}
 				previousJoystickButtonPressed = currentJoystickButtonPressed;
+				
 			}
 			else
 			{
 				Console.WriteLine("Joystick not connected");
 			}
+			Joystick.Update();
 		}
 
 		public static Vector2f GetMovement(uint joystickId)

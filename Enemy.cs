@@ -48,8 +48,9 @@ namespace FirstGame
             }
         }
         public abstract bool CanSeePlayer(Vector2f playerPosition);
-        public abstract void Update(float deltaTime, Vector2f playerPosition);
-        public void Draw(RenderWindow window)
+        public abstract void Update(float deltaTime, Vector2f playerPosition, View cameraView);
+
+		public void Draw(RenderWindow window)
         {
             window.Draw(sprite);
         }

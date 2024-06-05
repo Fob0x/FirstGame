@@ -2,6 +2,7 @@
 using SFML.System;
 using SFML.Window;
 using System;
+using System.Collections.Generic;
 
 namespace FirstGame
 {
@@ -9,7 +10,6 @@ namespace FirstGame
 	{
 		CleosMovements Cleo;
 		PatrollingEnemy patrollingEnemy;
-		Fireball fireball;
 		Image image;
 		Sprite BackgroundSprite;
 		static Texture BackgroundTexture;
@@ -29,7 +29,7 @@ namespace FirstGame
 			BackgroundTexture = new Texture(image);
 			BackgroundSprite = new Sprite(BackgroundTexture);
 			Cleo = new CleosMovements();
-			patrollingEnemy = new PatrollingEnemy(Cleo.position, new Vector2f(200, 840), new Vector2f(700, 840), 1000);
+			patrollingEnemy = new PatrollingEnemy(new Vector2f(300, 840), new Vector2f(1000, 840), 500);
 			inputHandler = new InputHandler(Cleo);
 			// Инициализируем врагов в конструкторе
 			enemies.Add(patrollingEnemy);
@@ -66,7 +66,7 @@ namespace FirstGame
 			// Обновление и отрисовка врагов
 			foreach (var enemy in enemies)
 			{
-				enemy.Update(dtAsSeconds, Cleo.position);
+				enemy.Update(dtAsSeconds, Cleo.position, camera);
 			}
 
 			// Обновление фаерболов
@@ -84,7 +84,6 @@ namespace FirstGame
 			// Удаление фаерболов, которые пролетели слишком далеко
 			Cleo.fireballs.RemoveAll(fireball => fireball.ShouldBeDestroyed());
 			patrollingEnemy.fireballs.RemoveAll(fireball => fireball.ShouldBeDestroyed());
-
 		}
 
 		public void Start()
@@ -100,7 +99,7 @@ namespace FirstGame
 
 				inputHandler.HandleInput();
 				Update(dtAsSeconds);
-				Joystick.Update();
+				//Joystick.Update();
 				Draw();
 			}
 		}
